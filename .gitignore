@@ -1,0 +1,4 @@
+/backend/myenv
+__pycache__
+*-workspace
+*.log*
