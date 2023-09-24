@@ -6,6 +6,7 @@ from .models import Task
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .serializers import TaskStatusUpdateSerializer, TaskPriorityUpdateSerializer, TaskAssignmentSerializer
+from django.shortcuts import get_object_or_404
 
 class CreateTaskView(APIView):
     #permission_classes = [IsAuthenticated]
@@ -123,3 +124,14 @@ class TaskAssignmentAPIView(APIView):
             return Response({'message': 'Task assigned successfully.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class TaskDetailView(APIView):
+    def get(self, request, task_id):
+        # Retrieve the task by its ID or return a 404 error if not found
+        task = get_object_or_404(Task, pk=task_id)
+
+        # Serialize the task data
+        serializer = TaskSerializer(task)
+
+        # Return the task details as a JSON response
+        return Response(serializer.data, status=status.HTTP_200_OK)
