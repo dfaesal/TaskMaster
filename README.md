@@ -10,8 +10,18 @@
 ## Table of contents
 
 <!-- toc -->
+- [Pre requisites](#pre-requisites)
 - [Getting started](#getting-started)
 <!-- tocstop -->
+
+## Pre requisites
+
+Create backend DB
+
+```bash
+cd "railman\"
+createdb -U postgres -h localhost -p 5432 railman
+```
 
 ## Getting started
 
