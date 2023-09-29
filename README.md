@@ -20,7 +20,7 @@ Create backend DB
 
 ```bash
 cd "railman\"
-createdb -U postgres -h localhost -p 5432 railman
+createdb -U postgres -h localhost -p 5432 taskmaster
 ```
 
 ## Getting started
