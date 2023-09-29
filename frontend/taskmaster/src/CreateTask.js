@@ -53,7 +53,6 @@ class CreateTask extends Component {
         },
         body: JSON.stringify(task),
       });
-      const responseData = await response.json();
       if (response.ok) {
         // Task created successfully
         console.log('Task created successfully.');
