@@ -5,7 +5,7 @@ from .serializers import TaskSerializer
 from .models import Task
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
-from .serializers import TaskStatusUpdateSerializer, TaskPriorityUpdateSerializer, TaskAssignmentSerializer
+from .serializers import TaskUpdateSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
 
 class CreateTaskView(APIView):
@@ -56,72 +56,43 @@ class TaskListAPIView(APIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
-class TaskStatusUpdateAPIView(APIView):
+class TaskUpdateAPIView(APIView):
     def patch(self, request, task_id):
         try:
-            task = Task.objects.get(id=task_id)#, user=request.user)
+            task = Task.objects.get(id=task_id)
         except Task.DoesNotExist:
             return Response({'error': 'Task not found.'}, status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = TaskStatusUpdateSerializer(data=request.data)
+
+        serializer = TaskUpdateSerializer(data=request.data, partial=True)
         if serializer.is_valid():
-            new_status = serializer.validated_data['status']
-            if task.status != new_status:
+            new_status = serializer.validated_data.get('status')
+            new_priority = serializer.validated_data.get('priority')
+            username = serializer.validated_data.get('username')
+
+            # Update status if provided
+            if new_status and task.status != new_status:
                 task.status = new_status
-                task.save()
-                return Response({'message': 'Task status updated successfully.'}, status=status.HTTP_200_OK)
-            else:
-                return Response({'message': 'No changes made to task status.'}, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TaskPriorityUpdateAPIView(APIView):
-    def patch(self, request, task_id):
-        try:
-            task = Task.objects.get(id=task_id)#, user=request.user)
-        except Task.DoesNotExist:
-            return Response({'error': 'Task not found.'}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = TaskPriorityUpdateSerializer(data=request.data)
-        if serializer.is_valid():
-            new_priority = serializer.validated_data['priority']
-            if task.priority != new_priority:
+            # Update priority if provided
+            if new_priority and task.priority != new_priority:
                 task.priority = new_priority
-                task.save()
-                return Response({'message': 'Task priority updated successfully.'}, status=status.HTTP_200_OK)
-            else:
-                return Response({'message': 'No changes made to task priority.'}, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class TaskAssignmentAPIView(APIView):
-    def post(self, request):
-        serializer = TaskAssignmentSerializer(data=request.data)
-        if serializer.is_valid():
-            task_id = serializer.validated_data['task_id']
-            username = serializer.validated_data['username']
+            # Update assignment if username is provided
+            if username:
+                try:
+                    team_member = User.objects.get(username=username)
+                except User.DoesNotExist:
+                    return Response({'error': 'Team member not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-            try:
-                task = Task.objects.get(id=task_id)
-            except Task.DoesNotExist:
-                return Response({'error': 'Task not found.'}, status=status.HTTP_404_NOT_FOUND)
+                # Check if the task is already assigned to the selected team member
+                if task.assigned_to != team_member:
+                    # Update the task's assignment
+                    task.assigned_to = team_member
 
-            try:
-                team_member = User.objects.get(username=username)
-            except User.DoesNotExist:
-                return Response({'error': 'Team member not found.'}, status=status.HTTP_404_NOT_FOUND)
+                    # Notify the team member about the new task assignment
 
-            # Check if the task is already assigned to the selected team member
-            if task.assigned_to == team_member:
-                return Response({'message': 'Task is already assigned to the selected team member.'}, status=status.HTTP_200_OK)
-
-            # Update the task's assignment
-            task.assigned_to = team_member
             task.save()
-
-            # Notify the team member about the new task assignment
-
-            return Response({'message': 'Task assigned successfully.'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Task updated successfully.'}, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
@@ -132,6 +103,33 @@ class TaskDetailView(APIView):
 
         # Serialize the task data
         serializer = TaskSerializer(task)
+        resp = serializer.data
+        try:
+            team_member = User.objects.get(id=resp["assigned_to"])
+            resp["assigned_to"] = team_member.username
+        except User.DoesNotExist:
+            pass
+        # Return the task details as a JSON response
+        return Response(resp, status=status.HTTP_200_OK)
+    
+class UserListView(APIView):
+    def get(self, request):
+        # Retrieve a list of users from the database
+        users = User.objects.all()
+        
+        # Serialize the list of users
+        serializer = UserSerializer(users, many=True)
+        
+        # Return the serialized data as a JSON response
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class UserDetailView(APIView):
+    def get(self, request, user_id):
+        # Retrieve the task by its ID or return a 404 error if not found
+        user = get_object_or_404(User, pk=user_id)
+
+        # Serialize the task data
+        serializer = UserSerializer(user)
 
         # Return the task details as a JSON response
         return Response(serializer.data, status=status.HTTP_200_OK)

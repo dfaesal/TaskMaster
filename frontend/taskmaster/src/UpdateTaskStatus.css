@@ -42,7 +42,7 @@
   }
   
   /* Status update section */
-  .status-update {
+  .info-update {
     display: flex;
     flex-direction: column;
     align-items: center;
