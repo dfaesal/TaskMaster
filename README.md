@@ -19,8 +19,16 @@
 Create backend DB
 
 ```bash
-cd "railman\"
+cd "TaskMaster\"
 createdb -U postgres -h localhost -p 5432 taskmaster
+```
+
+Restore data to taskmaster DB
+
+```bash
+# set your postgresql path in export
+set PATH=%PATH%;C:\Program Files\PostgreSQL\15\bin
+pg_restore -U postgres -h localhost -p 5432 -F c -v -d taskmaster backend\taskmasterDb_backup.dump
 ```
 
 ## Getting started
