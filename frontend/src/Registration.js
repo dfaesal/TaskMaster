@@ -61,6 +61,7 @@ class Registration extends Component {
               autoComplete="username"
               autoFocus
               onChange={this.handleInputChange}
+              sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
             />
             <TextField
               margin="normal"
@@ -71,6 +72,7 @@ class Registration extends Component {
               name="email"
               autoComplete="email"
               onChange={this.handleInputChange}
+              sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
             />
             <TextField
               margin="normal"
@@ -82,6 +84,7 @@ class Registration extends Component {
               id="password"
               autoComplete="new-password"
               onChange={this.handleInputChange}
+              sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
             />
             <div style={{ marginTop: '20px', marginBottom: '20px' }}>
               <label htmlFor="role">Role:</label>
@@ -91,6 +94,7 @@ class Registration extends Component {
                 onChange={this.handleInputChange}
                 fullWidth
                 name="role"
+                sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
               >
                 <MenuItem value="team_leader">Team Leader</MenuItem>
                 <MenuItem value="user">User</MenuItem>
@@ -106,7 +110,7 @@ class Registration extends Component {
               Register
             </Button>
             <Link to="/login">
-              <Button fullWidth variant="outlined" color="primary" sx={{ mt: 2 }}>
+              <Button fullWidth variant="contained" color="primary" style={{ marginTop: '20px', backgroundColor: '#3f51b5' }} >
                 Login
               </Button>
             </Link>

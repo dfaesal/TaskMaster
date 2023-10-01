@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, TableHead, TableBody, TableCell, TableRow, Paper, Typography, Button } from '@mui/material';
+import { Table, TableHead, TableBody, TableCell, TableRow, Paper, Typography, Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
+
+const getPriorityColor = (priority) => {
+  switch (priority) {
+    case 'High':
+      return 'red';
+    case 'Medium':
+      return 'orange';
+    case 'Low':
+      return 'green';
+    default:
+      return 'black';
+  };
+}
 
 class UserDashboard extends Component {
   state = {
@@ -53,7 +66,19 @@ class UserDashboard extends Component {
                 <TableCell>{task.title}</TableCell>
                 <TableCell>{task.status}</TableCell>
                 <TableCell>{task.due_date}</TableCell>
-                <TableCell>{task.priority}</TableCell>
+                <TableCell>
+                  <Box
+                    component="div"
+                    display="block"
+                    p={1}
+                    borderRadius="10px"
+                    bgcolor={getPriorityColor(task.priority)}
+                    width="60px"
+                    textAlign="center"
+                  >
+                    {task.priority}
+                  </Box>
+                </TableCell>
                 <TableCell>
                   <Button
                     component={Link}

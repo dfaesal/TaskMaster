@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField, Button, Paper, Typography, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { TextField, Button, Box, Container, Typography, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
@@ -79,8 +79,15 @@ class CreateTask extends Component {
     }
     const { task } = this.state;
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <Paper elevation={3} style={{ padding: '20px', margin: '20px', maxWidth: '500px', backgroundColor: '#f5f5f5' }}>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <Typography variant="h4" gutterBottom style={{ color: '#3f51b5' }}>
             Create Task
           </Typography>
@@ -94,6 +101,7 @@ class CreateTask extends Component {
               fullWidth
               margin="dense"
               required
+              sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
             />
             <TextField
               label="Task Description"
@@ -105,6 +113,7 @@ class CreateTask extends Component {
               fullWidth
               margin="dense"
               required
+              sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
             />
             <TextField
               type="date"
@@ -114,6 +123,7 @@ class CreateTask extends Component {
               fullWidth
               margin="dense"
               required
+              sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
             />
             <FormControl fullWidth margin="dense">
               <InputLabel htmlFor="assigned_to">Assigned To</InputLabel>
@@ -123,6 +133,7 @@ class CreateTask extends Component {
                 value={task.assigned_to}
                 onChange={this.handleInputChange}
                 fullWidth
+                sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
               >
                 {this.state.users.map((user) => (
                   <MenuItem key={user.id} value={user.username}>
@@ -138,6 +149,7 @@ class CreateTask extends Component {
                 name="priority"
                 value={task.priority}
                 onChange={this.handleInputChange}
+                sx={{ backgroundColor: '#e0e0e0', borderRadius: '5px', marginBottom: '10px' }}
               >
                 <MenuItem value="High">High</MenuItem>
                 <MenuItem value="Medium">Medium</MenuItem>
@@ -159,8 +171,8 @@ class CreateTask extends Component {
               {this.state.error}
             </Typography>
           )}
-        </Paper>
-      </div>
+        </Box>
+      </Container>
     );
   }
 }

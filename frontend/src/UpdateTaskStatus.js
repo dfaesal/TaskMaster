@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {
-  Paper,
+  Container,
+  Box,
   Typography,
   Table,
   TableBody,
@@ -114,11 +115,19 @@ class UpdateTaskStatus extends Component {
     }
 
     return (
-      <Paper elevation={3} style={{ padding: '20px', margin: '20px', maxWidth: '800px' }}>
-        <Typography variant="h4" color="primary" gutterBottom>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+        <Typography variant="h4" color="primary" gutterBottom style={{ color: '#3f51b5' }}>
           Update Task Detail
         </Typography>
-        <Table>
+        <Table sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
           <TableBody>
             <TableRow>
               <TableCell variant="head">Title:</TableCell>
@@ -194,7 +203,8 @@ class UpdateTaskStatus extends Component {
             Submit
           </Button>
         </div>
-      </Paper>
+      </Box>
+      </Container>
     );
   }
 }
