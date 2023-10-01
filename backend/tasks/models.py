@@ -1,6 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class CustomUser(models.Model):
+    def __str__(self):
+        return self.name
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=70, blank=True, default='')
+    email = models.CharField(max_length=200,blank=False, default='')
+    password = models.CharField(max_length=200,blank=False, default='')
+    USER_ROLES = [
+        ('team_leader', 'Team Leader'),
+        ('user', 'User'),
+    ]
+    role = models.CharField(max_length=20, choices=USER_ROLES, default='user')
+    
+
 class Task(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()

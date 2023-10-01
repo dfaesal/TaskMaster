@@ -1,4 +1,5 @@
 /backend/myenv
+/backend/env
 __pycache__
 *-workspace
 *.log*

@@ -9,8 +9,9 @@ class UserDashboard extends Component {
   };
 
   componentDidMount() {
+    const user = this.props.location.state.user[0];
     // Fetch user's tasks when the component mounts
-    axios.get('http://127.0.0.1:8000/tasks/view/')
+    axios.get(`http://127.0.0.1:8000/tasks/view/?user=${user.name}&role=${user.role}`)
       .then((response) => {
         this.setState({ tasks: response.data });
       })
@@ -29,7 +30,7 @@ class UserDashboard extends Component {
         </Typography>
         <Button
           component={Link}
-          to="/create-task"
+          to={{pathname: "/create-task", state: {user: this.props.location.state.user}}}
           variant="contained"
           color="primary"
           style={{ position: 'absolute', top: '30px', right: '30px' }}
@@ -56,7 +57,7 @@ class UserDashboard extends Component {
                 <TableCell>
                   <Button
                     component={Link}
-                    to={`/update-task/${task.id}`}
+                    to={{pathname: `/update-task/${task.id}`, state: {user: this.props.location.state.user}}}
                     variant="contained"
                     color="primary"
                   >

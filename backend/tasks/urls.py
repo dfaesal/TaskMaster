@@ -1,8 +1,10 @@
 from django.urls import path
-from . import views
+from . import views, views_authentication as auth
 
 urlpatterns = [
     # ...
+    path('register/', auth.register, name='register'),
+    path('login/', auth.login, name='login'),
     path('users/', views.UserListView.as_view(), name='user-list'),
     path('users/<int:user_id>/', views.UserDetailView.as_view(), name='user-detail'),
     path('create/', views.CreateTaskView.as_view(), name='create-task'),

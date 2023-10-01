@@ -5,7 +5,7 @@ from .serializers import TaskSerializer
 from .models import Task
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
-from .serializers import TaskUpdateSerializer, UserSerializer
+from .serializers import TaskUpdateSerializer, UserSerializer, UserRegistrationSerializer, UserLoginSerializer
 from django.shortcuts import get_object_or_404
 
 class CreateTaskView(APIView):
@@ -39,18 +39,35 @@ class TaskListAPIView(APIView):
     #permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        tasks = Task.objects.all()
+        user_name = request.query_params.get('user')
+        user_role = request.query_params.get('role')
+
+        if not user_name or not user_role:
+            return Response({'message': 'User and role parameters are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(username=user_name)
+        except User.DoesNotExist:
+            return Response({'message': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if user_role == 'team_leader':
+            tasks = Task.objects.all()
+        else:
+            tasks = Task.objects.filter(assigned_to=user)
+
         if not tasks.exists():
             return Response({'message': 'No tasks available for this user.'}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = TaskSerializer(tasks, many=True)
         data = serializer.data
+
         # Modify the JSON data to change assigned_to to username
         for task_data in data:
             assigned_to_id = task_data['assigned_to']
             if assigned_to_id:
                 try:
-                    user = User.objects.get(pk=assigned_to_id)
-                    task_data['assigned_to'] = user.username
+                    assigned_to_user = User.objects.get(pk=assigned_to_id)
+                    task_data['assigned_to'] = assigned_to_user.username
                 except User.DoesNotExist:
                     pass
 
@@ -133,3 +150,19 @@ class UserDetailView(APIView):
 
         # Return the task details as a JSON response
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class UserRegistrationView(APIView):
+    def post(self, request):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'User registered successfully.'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserLoginView(APIView):
+    def post(self, request):
+        serializer = UserLoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            return Response({'message': 'Login successful.', 'user_id': user.id, 'role': user.role})
+        return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)

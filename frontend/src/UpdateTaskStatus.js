@@ -103,7 +103,10 @@ class UpdateTaskStatus extends Component {
 
     if (redirectToDashboard) {
       // Redirect to the dashboard after task creation
-      return <Redirect to="/" />;
+      return <Redirect to={{
+        pathname: '/dashboard',
+        state: { user: this.props.location.state.user },
+      }} />;
     }
 
     if (!task) {
