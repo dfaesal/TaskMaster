@@ -3,6 +3,7 @@
 __pycache__
 *-workspace
 *.log*
+deployment.py
 
 # dependencies
 node_modules
