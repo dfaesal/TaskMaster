@@ -1,6 +1,6 @@
 #! /bin/bash
 sudo mkdir -p /home/ec2-user/taskmaster/
-sudo cp -Rf /app/backend/backend/ /home/ec2-user/taskmaster/
+sudo cp -rf /app/backend/backend/ /home/ec2-user/taskmaster/
 cd /home/ec2-user/taskmaster/
 sudo docker cp taskmasterDb_backup.dump postgresql:/var/lib/postgresql/data/taskmasterDb_backup.dump
 sudo docker exec -it postgresql createdb -U postgres -h localhost -p 5432 taskmaster
