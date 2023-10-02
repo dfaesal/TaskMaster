@@ -24,7 +24,7 @@ class UserDashboard extends Component {
   componentDidMount() {
     const user = this.props.location.state.user[0];
     // Fetch user's tasks when the component mounts
-    axios.get(`http://127.0.0.1:8000/tasks/view/?user=${user.name}&role=${user.role}`)
+    axios.get(`http://ec2-3-110-218-220.ap-south-1.compute.amazonaws.com:8000/tasks/view/?user=${user.name}&role=${user.role}`)
       .then((response) => {
         this.setState({ tasks: response.data });
       })

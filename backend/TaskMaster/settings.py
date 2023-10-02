@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'http://taskmasterbucket.s3-website.ap-south-1.amazonaws.com:3000/'
+    'http://taskmasterbucket.s3-website.ap-south-1.amazonaws.com:3000'
 ]
 
 # You can adjust other CORS settings as needed

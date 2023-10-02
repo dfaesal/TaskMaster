@@ -28,7 +28,7 @@ class UpdateTaskStatus extends Component {
     // Fetch the task by ID when the component mounts
     const taskId = this.props.match.params.taskId;
     axios
-      .get(`http://127.0.0.1:8000/tasks/view/${taskId}/`)
+      .get(`http://ec2-3-110-218-220.ap-south-1.compute.amazonaws.com:8000/tasks/view/${taskId}/`)
       .then((response) => {
         this.setState({ task: response.data });
       })
@@ -36,7 +36,7 @@ class UpdateTaskStatus extends Component {
         console.error('Error fetching task:', error);
       });
     axios
-      .get('http://127.0.0.1:8000/tasks/users/')
+      .get('http://ec2-3-110-218-220.ap-south-1.compute.amazonaws.com:8000/tasks/users/')
       .then((response) => {
         this.setState({ users: response.data });
       })
@@ -77,7 +77,7 @@ class UpdateTaskStatus extends Component {
 
     // Send a PATCH request to update the task with the selected values
     axios
-      .patch(`http://127.0.0.1:8000/tasks/update_task/${taskId}/`, updatedFields)
+      .patch(`http://ec2-3-110-218-220.ap-south-1.compute.amazonaws.com:8000/tasks/update_task/${taskId}/`, updatedFields)
       .then((response) => {
         // Handle success, e.g., show a success message or navigate back
         console.log('Task updated successfully:', response.data);

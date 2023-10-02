@@ -20,7 +20,7 @@ class Registration extends Component {
     e.preventDefault(); // Prevent the default form submission
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/tasks/register/', this.state);
+      const response = await axios.post('http://ec2-3-110-218-220.ap-south-1.compute.amazonaws.com:8000/tasks/register/', this.state);
       console.log(response.data); // Handle successful registration
 
       // Redirect to login after successful registration

@@ -22,7 +22,7 @@ class CreateTask extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://127.0.0.1:8000/tasks/users/')
+    axios.get('http://ec2-3-110-218-220.ap-south-1.compute.amazonaws.com:8000/tasks/users/')
       .then((response) => {
         this.setState({ users: response.data });
       })
@@ -46,7 +46,7 @@ class CreateTask extends Component {
     const { task } = this.state;
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/tasks/create/', {
+      const response = await fetch('http://ec2-3-110-218-220.ap-south-1.compute.amazonaws.com:8000/tasks/create/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

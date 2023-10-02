@@ -19,7 +19,7 @@ class Login extends Component {
     e.preventDefault(); // Prevent the default form submission
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/tasks/login/', this.state);
+      const response = await axios.post('http://ec2-3-110-218-220.ap-south-1.compute.amazonaws.com:8000/tasks/login/', this.state);
       console.log(response.data); 
       const user = response.data; // Assuming the user details are returned in the response
 
