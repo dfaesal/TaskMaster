@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-#g(x1&_x!806b$@0bv=-w-ts!#8=#a$z7fu!y*sdr714wq(+ch
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'ec2-3-110-218-220.ap-south-1.compute.amazonaws.com',
+    '3.110.218.220'
+    ]
 
 
 # Application definition
@@ -44,7 +47,8 @@ INSTALLED_APPS = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
-    'http://127.0.0.1:3000'
+    'http://127.0.0.1:3000',
+    'http://taskmasterbucket.s3-website.ap-south-1.amazonaws.com:3000/'
 ]
 
 # You can adjust other CORS settings as needed
